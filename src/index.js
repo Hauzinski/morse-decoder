@@ -39,36 +39,20 @@ const MORSE_TABLE = {
 
 function decode(expr) {
   let arr = [];
-  let arr2 = [];
-  let arr3 = [];
+  let arr2 = [];  
 
   let iter = expr.length / 10;
   for (let i = 0; i < iter; i++) {
     arr.push(expr.substr(10 * i, 10));
   }
   for (let i = 0; i < arr.length; i++) {
+    arr2[i] = new Array();
     for (let e = 0; e < 5; e++) {
-      arr2.push(arr[i].substr(2 * e, 2));
-    }
-    arr2.push(" ");
-  }
-  let e = "";
-  for (let i = 0; i < arr2.length; i++) {
-    if (arr2[i] === "10") {
-      e += ".";
-    } else if (arr2[i] === "11") {
-      e += "-";
-    } else if (arr2[i] === "**") {
-      e += " ";
-    } else if (arr2[i] === " ") {
-      arr3.push(e);
-      e = "";
+      arr2[i].push(arr[i].substr(2 * e, 2));
     }
   }
-  return arr3
-    .map((value) => MORSE_TABLE[value])
-    .map((value) => (value === undefined ? " " : value))
-    .join("");
+  return arr2.map((value) => value.filter((value) => value !== "00").map((value) => (value === "10" ? "." : value === "11" ? "-" : value)).join("")).map((value) => MORSE_TABLE[value]).map((value) => (value === undefined ? " " : value)).join("");
+
 }
 
 module.exports = {
